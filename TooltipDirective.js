@@ -2,7 +2,10 @@ import './scss/_tooltip.scss'
 import Vue from 'vue';
 
 class Tooltip {
-    constructor() {
+    constructor(classes = null, idsPrefix = '') {
+        this.classes = classes;
+        this.idsPrefix = idsPrefix;
+
         this.makeContainer()
             .makeContentContainer()
             .makeArrow();
@@ -10,7 +13,7 @@ class Tooltip {
 
     makeContainer() {
         this.tooltip = document.createElement('div');
-        this.tooltip.setAttribute('id', `tooltip`);
+        this.tooltip.setAttribute('id', `${this.idsPrefix}tooltip`);
         this.setCss();
         document.body.append(this.tooltip);
 
@@ -19,7 +22,7 @@ class Tooltip {
 
     makeContentContainer() {
         this.content = document.createElement('p');
-        this.content.setAttribute('id', `tooltip-content`);
+        this.content.setAttribute('id', `${this.idsPrefix}tooltip-content`);
         this.tooltip.append(this.content);
 
         return this;
@@ -27,7 +30,7 @@ class Tooltip {
 
     makeArrow() {
         this.arrow = document.createElement('span');
-        this.arrow.setAttribute('id', 'tooltip-arrow');
+        this.arrow.setAttribute('id', `${this.idsPrefix}tooltip-arrow`);
         this.arrow.classList.add('arrow-top');
         this.tooltip.append(this.arrow);
 
@@ -35,8 +38,24 @@ class Tooltip {
     }
 
     setCss() {
-        this.tooltip.classList
-            .add('is-tooltip', 'absolute', 'bg-grey-darkest', 'border', 'border-black', 'text-white', 'p-2', 'rounded', 'pointer-events-none', 'opacity-0');
+        let defaultClasses = [
+            'is-tooltip',
+            'absolute',
+            'bg-grey-darkest',
+            'border',
+            'border-black',
+            'text-white',
+            'p-2',
+            'rounded',
+            'pointer-events-none',
+            'opacity-0'
+        ];
+
+        if (!this.classes) {
+            this.classes = defaultClasses;
+        }
+
+        this.tooltip.classList.add(...this.classes);
     }
 
     show() {
@@ -133,16 +152,8 @@ Vue.directive('tooltip', {
 
         el.classList.add('has-tooltip');
 
-        el.addEventListener('mouseover', () => {
-            window._tooltip
-                .setContent(binding.value)
-                .setPosition(el)
-                .show();
-        });
-
-        el.addEventListener('mouseout', () => {
-            window._tooltip.hide();
-        })
+        el.addEventListener('mouseover', () => window._tooltip.setContent(binding.value).setPosition(el).show());
+        el.addEventListener('mouseout', () => window._tooltip.hide())
     },
 
     update(el, binding) {
