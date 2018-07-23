@@ -1,3 +1,4 @@
+import './scss/_tooltip.scss'
 import Vue from 'vue';
 
 class Tooltip {

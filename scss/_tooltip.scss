@@ -1,0 +1,36 @@
+
+
+.is-tooltip {
+    white-space: nowrap;
+    transition: opacity .3s;
+
+    .arrow-top {
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid #3d4851;
+
+        position: absolute;
+        top: -0.4rem;
+        left: calc(50% - 10px);
+    }
+
+    .arrow-bottom {
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid #3d4851;
+
+        position: absolute;
+        bottom: -0.4rem;
+        left: calc(50% - 10px);
+    }
+}
+
+.has-tooltip {
+    text-decoration-style: dashed;
+    text-decoration-color: black;
+    text-decoration-line: underline;
+}
